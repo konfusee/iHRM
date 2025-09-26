@@ -10,15 +10,31 @@ iHRM is a comprehensive Human Resource Management System built with Jakarta EE 1
 ### Prerequisites
 - Java 17 or higher
 - Maven 3.6+
-- MySQL 8.0 database (configured at atlas.konfuse.me)
+- MySQL 8.0 database
 
-### Run Locally (No Server Installation Needed!)
+### Setup
+1. **Clone the repository**
 ```bash
-# Clone the repository
-git clone [repository-url]
+git clone https://github.com/konfusee/iHRM.git
 cd iHRM
+```
 
-# Run with embedded Jetty server
+2. **Configure database connection**
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env with your database credentials
+# DB_HOST=your_database_host
+# DB_PORT=3306
+# DB_NAME=your_database_name
+# DB_USERNAME=your_username
+# DB_PASSWORD=your_password
+```
+
+3. **Run the application**
+```bash
+# Run with embedded Jetty server (no installation needed!)
 ./mvnw jetty:run
 
 # Access the application
@@ -29,7 +45,7 @@ open http://localhost:8080/ihrm
 Create test users by running:
 ```bash
 # Compile first, then run
-./mvnw clean compile exec:java -Dexec.mainClass=util.com.ihrm.web.TestDataInitializer
+./mvnw clean compile exec:java -Dexec.mainClass=com.ihrm.web.util.TestDataInitializer
 ```
 
 This creates:
@@ -64,6 +80,7 @@ This creates:
 - **Build Tool**: Maven 3
 - **Dev Server**: Jetty 11 (embedded)
 - **Production**: Tomcat 10.1+
+- **Configuration**: Environment variables via dotenv-java
 
 ## 📁 Project Structure
 
@@ -113,8 +130,8 @@ iHRM/
 
 ### Database Connection
 ```bash
-# Using usql (universal database CLI)
-usql mysql://iHRM:1fivQswM88rXiTWf@atlas.konfuse.me:3306/iHRM
+# Using usql (universal database CLI) with environment variables
+usql mysql://$DB_USERNAME:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME
 ```
 
 ## 📦 Deployment
@@ -162,6 +179,7 @@ The database uses MySQL with 18 tables fully normalized to 3NF:
 - **Remember Me**: Optional 7-day session extension
 - **Access Control**: AuthenticationFilter protects all pages except login
 - **SQL Injection Prevention**: Prepared statements throughout
+- **Credential Protection**: Database credentials stored in `.env` file (excluded from git)
 
 ## 📄 Documentation
 
