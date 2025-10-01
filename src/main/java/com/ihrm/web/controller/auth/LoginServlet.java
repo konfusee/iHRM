@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/auth/login/index.jsp").forward(request, response);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             request.setAttribute("error", "Email and password are required.");
-            request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/auth/login/index.jsp").forward(request, response);
             return;
         }
 
@@ -70,12 +70,12 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 request.setAttribute("error", "Invalid email or password. Please try again.");
-                request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/view/auth/login/index.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "An error occurred during login. Please try again later.");
-            request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/auth/login/index.jsp").forward(request, response);
         }
     }
 }
