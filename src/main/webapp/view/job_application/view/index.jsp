@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>List Job Application</title>
+    <title>View Job Application</title>
 </head>
 <body>
-    <h1>List Job Application</h1>
+    <h1>View Job Application</h1>
     <p>Current time: <%= new java.util.Date() %></p>
 </body>
 </html>
