@@ -4,7 +4,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%-- Define menu items
 <c:set
   var="menuItems"
   value="${[
-    {'label': 'Trang chủ', 'url': '/'},
+    {'label': 'Home', 'url': '/'},
     {'label': 'Application', 'url': '/job_application'},
     {'label': 'Posting', 'url': '/job_posting'},
     {'label': 'Employee', 'url': '/employee'},
@@ -13,6 +13,13 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%-- Define menu items
     {'label': 'Contact', 'url': '/contact'}
 ]}"
   scope="page"
+/>
+<!-- Google Fonts - Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
 />
 <link
   rel="stylesheet"
@@ -66,7 +73,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%-- Define menu items
           class="header__login-btn header__login-btn--mobile"
           onclick="window.location.href='${pageContext.request.contextPath}/login'"
         >
-          Đăng nhập
+          Login
         </button>
       </div>
     </nav>
@@ -88,7 +95,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%-- Define menu items
         class="header__login-btn header__login-btn--desktop"
         onclick="window.location.href='${pageContext.request.contextPath}/login'"
       >
-        Đăng nhập
+        Login
       </button>
     </div>
   </div>
@@ -104,7 +111,9 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%-- Define menu items
     this.classList.toggle("active");
     nav.classList.toggle("active");
     mobileOverlay.classList.toggle("active");
-    document.body.style.overflow = nav.classList.contains("active") ? "hidden" : "";
+    document.body.style.overflow = nav.classList.contains("active")
+      ? "hidden"
+      : "";
   });
 
   // Close menu when clicking overlay

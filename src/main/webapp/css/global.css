@@ -47,6 +47,7 @@
   --color-divider: #e2e8f0;
   --color-card-bg: #f8fafc;
   --color-modal-bg: #ffffff;
+  --color-header-bg: #f8fafc;
 
   /* GRADIENTS */
   --gradient-purple: linear-gradient(135deg, #fcd9e5 0%, #e9d5ff 100%);
@@ -90,7 +91,7 @@
   --color-gray: #64748b;
   --color-gray-light: #334155;
   --color-background: #0f172a;
-  --color-white: #1e293b;
+  --color-white: #0f172a;
 
   /* SEMANTIC COLORS */
   --color-text-primary: #f8fafc;
@@ -98,8 +99,9 @@
   --color-text-disabled: #64748b;
   --color-border: #334155;
   --color-divider: #334155;
-  --color-card-bg: #1e293b;
-  --color-modal-bg: #1e293b;
+  --color-card-bg: #0f172a;
+  --color-modal-bg: #0f172a;
+  --color-header-bg: #f8fafc;
 
   /* GRADIENTS */
   --gradient-purple: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
@@ -944,9 +946,9 @@ a:focus {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1700px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 40px;
 }
 
 .container-fluid {
@@ -1170,4 +1172,38 @@ a:focus {
 }
 .align-stretch {
   align-items: stretch;
+}
+
+/* ========================================
+   GRID DEBUG OVERLAY
+   ======================================== */
+
+/* Thêm class "debug-grid" vào body để hiện grid overlay */
+body.debug-grid .container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.1) 0px,
+    rgba(255, 0, 0, 0.1) calc(8.333333% - 1px),
+    transparent calc(8.333333% - 1px),
+    transparent 8.333333%
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body.debug-grid .container {
+  position: relative;
+}
+
+body.debug-grid [class*="col-"] {
+  background-color: rgba(0, 123, 255, 0.1);
+  border: 1px dashed rgba(0, 123, 255, 0.3);
 }
