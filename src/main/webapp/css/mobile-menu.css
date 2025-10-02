@@ -1,0 +1,111 @@
+/* ========================================
+   MOBILE MENU IMPROVEMENTS
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Better mobile nav styling - Full screen */
+  .header__nav {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    padding: 5rem 2rem 2rem !important;
+    gap: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Better nav links - aligned with dividers, no gaps */
+  .header__nav a {
+    font-size: 1.05rem !important;
+    font-weight: 500 !important;
+    padding: 1.5rem 0 !important;
+    margin: 0 !important;
+    border-bottom: 1px solid var(--color-divider) !important;
+    transition: all 0.2s ease !important;
+    display: block !important;
+    line-height: 1.4 !important;
+  }
+
+  .header__nav a:hover {
+    padding-left: 0.5rem !important;
+    text-decoration: none !important;
+  }
+
+  .header__nav a:first-child {
+    border-top: 1px solid var(--color-divider) !important;
+  }
+
+  .header__nav a:last-of-type {
+    border-bottom: none !important;
+  }
+
+  /* Mobile actions container - Flexbox horizontal, push to bottom, no divider */
+  .header__mobile-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    padding: 1.5rem 0 0 0 !important;
+    border-top: none !important;
+  }
+
+  /* Theme toggle button in mobile */
+  .header__theme-toggle--mobile {
+    width: 50px !important;
+    height: 50px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    border: 2px solid var(--color-border) !important;
+    background: var(--color-background) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .header__theme-toggle--mobile:hover {
+    background: var(--color-gray-light) !important;
+    border-color: var(--color-primary) !important;
+    transform: scale(1.05);
+  }
+
+  /* Login button in mobile */
+  .header__login-btn--mobile {
+    flex: 1 !important;
+    height: 50px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .header__login-btn--mobile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35) !important;
+  }
+
+  /* Mobile menu overlay */
+  .mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  .mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

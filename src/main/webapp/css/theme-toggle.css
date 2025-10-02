@@ -1,0 +1,72 @@
+/* ========================================
+   THEME TOGGLE BUTTON STYLES
+   ======================================== */
+
+.header__actions {
+  gap: 1rem;
+}
+
+.header__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.header__theme-toggle:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-gray-light);
+}
+
+.theme-icon {
+  color: var(--color-text-primary);
+  transition: opacity 0.3s ease;
+}
+
+.theme-icon--dark {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon--light {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon--dark {
+  display: block;
+}
+
+/* Desktop login button */
+.header__login-btn--desktop {
+  font-weight: 600;
+}
+
+/* Mobile actions */
+.header__mobile-actions {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .header__mobile-actions {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .header__theme-toggle--mobile {
+    flex: 0 0 auto;
+  }
+
+  .header__login-btn--mobile {
+    flex: 1;
+  }
+}

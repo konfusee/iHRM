@@ -18,9 +18,12 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         excludedUrls = Arrays.asList(
+            "/",
+            "",
             "/login",
             "/login.jsp",
             "/index.jsp",
+            "/view/index.jsp",
             "/css/",
             "/js/",
             "/images/",
@@ -40,7 +43,7 @@ public class AuthenticationFilter implements Filter {
 
         boolean isExcluded = false;
         for (String excludedUrl : excludedUrls) {
-            if (path.startsWith(excludedUrl) || path.equals("/")) {
+            if (path.equals(excludedUrl) || (excludedUrl.endsWith("/") && path.startsWith(excludedUrl))) {
                 isExcluded = true;
                 break;
             }
