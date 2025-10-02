@@ -69,6 +69,8 @@
       </div>
     </section>
 
+    <%@ include file="common/footer.jsp" %>
+
     <script>
       // Typing effect loop
       const texts = ["Smart HR Management System"];
