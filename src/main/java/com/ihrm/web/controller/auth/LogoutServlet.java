@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import com.ihrm.web.session.SessionManager;
 
 import java.io.IOException;
 
@@ -26,10 +26,10 @@ public class LogoutServlet extends HttpServlet {
 
     private void processLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+        // Invalidate the database-backed session
+        SessionManager sessionManager = SessionManager.getInstance();
+        sessionManager.invalidateSession(request, response);
+
         response.sendRedirect(request.getContextPath() + "/login?success=You have been successfully logged out.");
     }
 }

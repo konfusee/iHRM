@@ -115,6 +115,23 @@ CREATE TABLE Employee (
                           INDEX idx_dept_role (DepartmentRoleId)
 ) ENGINE=InnoDB;
 
+-- Create Session table for database-backed sessions
+CREATE TABLE Session (
+    SessionId VARCHAR(64) PRIMARY KEY,
+    EmployeeId INT,
+    Active BOOLEAN DEFAULT TRUE,
+    CreatedAt DATETIME NOT NULL,
+    LastAccessedAt DATETIME NOT NULL,
+    ExpiresAt DATETIME NOT NULL,
+    UserAgent VARCHAR(500),
+    IpAddress VARCHAR(45),
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_employee (EmployeeId),
+    INDEX idx_expires (ExpiresAt),
+    INDEX idx_active (Active),
+    INDEX idx_employee_active (EmployeeId, Active)
+) ENGINE=InnoDB;
+
 -- Create WorkSchedule table
 CREATE TABLE WorkSchedule (
                               WorkScheduleId INT PRIMARY KEY AUTO_INCREMENT,

@@ -5,9 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import com.ihrm.web.dao.EmployeeDAO;
 import com.ihrm.web.model.Employee;
+import com.ihrm.web.session.DatabaseBackedSession;
+import com.ihrm.web.session.SessionManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -46,24 +47,18 @@ public class LoginServlet extends HttpServlet {
             Employee employee = employeeDAO.authenticate(email.trim(), password);
 
             if (employee != null) {
-                HttpSession session = request.getSession(true);
+                SessionManager sessionManager = SessionManager.getInstance();
 
-                session.setAttribute("employeeId", employee.getEmployeeId());
-                session.setAttribute("employeeName", employee.getName());
-                session.setAttribute("employeeEmail", employee.getEmail());
-                session.setAttribute("systemRoleId", employee.getSystemRoleId());
-                session.setAttribute("departmentId", employee.getDepartmentId());
-                session.setAttribute("departmentRoleId", employee.getDepartmentRoleId());
+                // Check for redirect URL from request parameter (sent by login form)
+                String redirectUrl = request.getParameter("redirectUrl");
 
-                if ("true".equals(remember)) {
-                    session.setMaxInactiveInterval(7 * 24 * 60 * 60);
-                } else {
-                    session.setMaxInactiveInterval(30 * 60);
-                }
+                // Create new authenticated session
+                boolean rememberMe = "true".equals(remember);
+                DatabaseBackedSession session = sessionManager.createSession(
+                    request, response, employee.getEmployeeId(), rememberMe);
 
-                String redirectUrl = (String) session.getAttribute("redirectUrl");
-                if (redirectUrl != null) {
-                    session.removeAttribute("redirectUrl");
+                // Redirect to original URL or home
+                if (redirectUrl != null && !redirectUrl.isEmpty()) {
                     response.sendRedirect(redirectUrl);
                 } else {
                     response.sendRedirect(request.getContextPath() + "/");

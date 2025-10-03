@@ -185,6 +185,11 @@
         </c:if>
 
         <form action="${pageContext.request.contextPath}/login" method="post" id="loginForm">
+            <!-- Pass redirect URL as hidden field if provided -->
+            <c:if test="${not empty param.redirectUrl}">
+                <input type="hidden" name="redirectUrl" value="${param.redirectUrl}">
+            </c:if>
+
             <div class="form-group">
                 <label for="email" class="form-label">Email Address</label>
                 <input type="email"

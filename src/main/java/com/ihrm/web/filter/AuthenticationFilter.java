@@ -1,12 +1,16 @@
 package com.ihrm.web.filter;
 
+import com.ihrm.web.dao.EmployeeDAO;
+import com.ihrm.web.model.Employee;
+import com.ihrm.web.session.DatabaseBackedSession;
+import com.ihrm.web.session.SessionManager;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +18,7 @@ import java.util.List;
 public class AuthenticationFilter implements Filter {
 
     private List<String> excludedUrls;
+    private EmployeeDAO employeeDAO;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -29,6 +34,7 @@ public class AuthenticationFilter implements Filter {
             "/images/",
             "/favicon.ico"
         );
+        employeeDAO = new EmployeeDAO();
     }
 
     @Override
@@ -50,17 +56,51 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (!isExcluded) {
-            HttpSession session = httpRequest.getSession(false);
+            SessionManager sessionManager = SessionManager.getInstance();
+            DatabaseBackedSession session = sessionManager.getSession(httpRequest);
 
-            if (session == null || session.getAttribute("employeeId") == null) {
-                session = httpRequest.getSession(true);
+            if (session == null || !session.isValid() || session.getEmployeeId() == null) {
+                // Build redirect URL to pass as parameter to login page
                 String requestUrl = httpRequest.getRequestURI();
                 if (httpRequest.getQueryString() != null) {
                     requestUrl += "?" + httpRequest.getQueryString();
                 }
-                session.setAttribute("redirectUrl", requestUrl);
-                httpResponse.sendRedirect(contextPath + "/login");
+                // Pass the redirect URL as a parameter to the login page
+                httpResponse.sendRedirect(contextPath + "/login?redirectUrl=" +
+                    java.net.URLEncoder.encode(requestUrl, "UTF-8"));
                 return;
+            }
+
+            // Update last accessed time
+            session.touch();
+
+            // Make session available to the request
+            httpRequest.setAttribute("dbSession", session);
+
+            // Fetch fresh employee data from database to avoid staleness
+            Integer employeeId = session.getEmployeeId();
+            if (employeeId != null) {
+                try {
+                    Employee employee = employeeDAO.findById(employeeId);
+                    if (employee != null) {
+                        // Make fresh employee data available to the request
+                        httpRequest.setAttribute("employee", employee);
+                        httpRequest.setAttribute("employeeId", employee.getEmployeeId());
+                        httpRequest.setAttribute("employeeName", employee.getName());
+                        httpRequest.setAttribute("employeeEmail", employee.getEmail());
+                        httpRequest.setAttribute("systemRoleId", employee.getSystemRoleId());
+                        httpRequest.setAttribute("departmentId", employee.getDepartmentId());
+                        httpRequest.setAttribute("departmentRoleId", employee.getDepartmentRoleId());
+                    } else {
+                        // Employee not found in database - invalid session
+                        sessionManager.invalidateSession(httpRequest, httpResponse);
+                        httpResponse.sendRedirect(contextPath + "/login");
+                        return;
+                    }
+                } catch (SQLException e) {
+                    // Log error but don't break the request
+                    System.err.println("Failed to fetch employee data: " + e.getMessage());
+                }
             }
         }
 
